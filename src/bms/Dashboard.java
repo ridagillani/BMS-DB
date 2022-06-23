@@ -29,7 +29,7 @@ public class Dashboard extends JFrame {
 
     public Dashboard()
     {
-        setTitle("Admin Dashboard");
+        setTitle("User Dashboard");
         setSize(1280,720);
         setResizable(false);
         setLayout(new BorderLayout());
