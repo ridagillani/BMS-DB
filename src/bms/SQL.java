@@ -2,6 +2,34 @@ package bms;
 import java.sql.*;
 
 public class SQL {
+    public static boolean employee_login (String username, String password) {
+        try{
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            Connection con = DriverManager.getConnection(
+                    "jdbc:oracle:thin:@localhost:1521:xe","hr","hr");
+
+            Statement stmt = con.createStatement();
+
+            ResultSet rs = stmt.executeQuery("SELECT * from \"HR\".\"EMPLOYEE\" where name='"+ username +"'");
+
+            rs.next();
+
+            String usernameDB = rs.getString(2);
+            String pass = rs.getString(6);
+            con.close();
+
+            if (usernameDB.equals(username) && password.equals(pass)) {
+                return true;
+            }
+            return false;
+
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
     public static boolean branch_login (String username, String password) {
         try{
             Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -131,6 +159,29 @@ public class SQL {
         }
     }
 
+    public static boolean updateEmployee (int id, String name, String password, String cnic, String salary) {
+        try {
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            Connection con=DriverManager.getConnection(
+                    "jdbc:oracle:thin:@localhost:1521:xe","hr","hr");
+
+            Statement stmt=con.createStatement();
+
+            ResultSet employee_update = stmt.executeQuery("UPDATE \"HR\".\"EMPLOYEE\" SET name = '" + name + "', cnic = '" + cnic + "', salary = '" + salary + "', password = '" + password + "' WHERE id = " + id);
+            System.out.println("Employee updated");
+
+
+            con.close();
+
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static boolean addEmployee (String name, String password, String cnic, String salary) {
         try {
             int employee_id = 1;
@@ -168,33 +219,41 @@ public class SQL {
             Connection con=DriverManager.getConnection(
                     "jdbc:oracle:thin:@localhost:1521:xe","hr","hr");
 
-            Statement stmt=con.createStatement();
-            ResultSet rowsRs = stmt.executeQuery("select count(*) from \"HR\".\"EMPLOYEE\"");
+            Statement stmt1=con.createStatement();
+            ResultSet rowsRs = stmt1.executeQuery("select count(*) from \"HR\".\"EMPLOYEE\"");
             rowsRs.next();
 
             int rows = rowsRs.getInt(1);
-            data = new String[rows][4];
 
-            ResultSet employees = stmt.executeQuery("select * from \"HR\".\"EMPLOYEE\"");
+            stmt1.close();
+
+            data = new String[rows][6];
+
+            Statement stmt2=con.createStatement();
+            ResultSet employees = stmt2.executeQuery("select * from \"HR\".\"EMPLOYEE\"");
 
             int count = 0;
 
             while (employees.next()) {
-                String[] employee = new String[4];
+                String[] employee = new String[6];
                 int employee_id = employees.getInt(1);
                 String name = employees.getString(2);
                 String cnic = employees.getString(3);
                 String salary = employees.getString(4);
                 int branch_id = employees.getInt(5);
+                String password = employees.getString(6);
 
-                ResultSet employeeD = stmt.executeQuery("select * from \"HR\".\"BRANCH\" where id = '" + branch_id + "'");
+                Statement stmt3=con.createStatement();
+                ResultSet employeeD = stmt3.executeQuery("select * from \"HR\".\"BRANCH\" where id = '" + branch_id + "'");
                 employeeD.next();
                 String branch = employeeD.getString(2);
 
                 employee[0] = Integer.toString(employee_id);
                 employee[1] = name;
-                employee[2] = salary;
-                employee[3] = branch;
+                employee[2] = password;
+                employee[3] = cnic;
+                employee[4] = salary;
+                employee[5] = branch;
 
                 data[count] = employee;
                 count++;
@@ -202,10 +261,30 @@ public class SQL {
 
             con.close();
 
+
             return data;
         } catch (Exception e) {
             System.out.println(e);
             return data;
+        }
+    }
+
+    public static boolean removeEmployee (int id) {
+        try {
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            Connection con=DriverManager.getConnection(
+                    "jdbc:oracle:thin:@localhost:1521:xe","hr","hr");
+
+            Statement stmt=con.createStatement();
+            ResultSet delete = stmt.executeQuery("DELETE FROM \"HR\".\"EMPLOYEE\" WHERE id = " + id);
+
+            con.close();
+            return true;
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
         }
     }
 

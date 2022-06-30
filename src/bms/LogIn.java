@@ -116,8 +116,13 @@ public class LogIn extends JFrame {
                     JOptionPane.showMessageDialog(null, "The username and passwords don't match!");
                 }
             } else if (employee.isSelected()) {
-                new EmployeeDash();
-                dispose();
+                boolean loggedIn = SQL.employee_login(username.getText(), password.getText());
+                if (loggedIn) {
+                    new EmployeeDash();
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "The username and passwords don't match!");
+                }
             }
         }
     }
