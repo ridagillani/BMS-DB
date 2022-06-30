@@ -14,27 +14,27 @@ public class MainDash extends JPanel {
         dashBox.setLayout(new GridLayout(2,1,10,10));
 
         JLabel currentAmount = new JLabel();
-        currentAmount.setText("Current Balance: 23,456");
+        currentAmount.setText("Current Balance: " + UserDetails.getBalance());
         currentAmount.setFont(new Font("Gilroy", Font.BOLD,15));
         currentAmount.setHorizontalAlignment(currentAmount.CENTER);
 
         JLabel cnic = new JLabel();
-        cnic.setText("CNIC: 37405-88880-9");
+        cnic.setText("CNIC: " + UserDetails.getCnic());
         cnic.setFont(new Font("Gilroy", Font.BOLD,15));
         cnic.setHorizontalAlignment(cnic.CENTER);
 
         JLabel name = new JLabel();
-        name.setText("Account Title: Demo User");
+        name.setText("Account Title: " + UserDetails.getUserName());
         name.setFont(new Font("Gilroy", Font.BOLD,15));
         name.setHorizontalAlignment(name.CENTER);
 
         JLabel accNum = new JLabel();
-        accNum.setText("Account Number: 12345678");
+        accNum.setText("Account Number: " + UserDetails.getAccountNumber());
         accNum.setFont(new Font("Gilroy", Font.BOLD,15));
         accNum.setHorizontalAlignment(accNum.CENTER);
 
         JLabel type = new JLabel();
-        type.setText("Account Type: Current");
+        type.setText("Account Type: " + UserDetails.getAccountType());
         type.setFont(new Font("Gilroy", Font.BOLD,15));
         type.setHorizontalAlignment(type.CENTER);
 

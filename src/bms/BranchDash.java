@@ -19,6 +19,8 @@ public class BranchDash extends JFrame {
 
     String current = "view";
 
+    String[][] employeeList;
+
     public BranchDash () {
         setTitle("Branch Dashboard");
         setSize(1280,720);
@@ -107,10 +109,13 @@ public class BranchDash extends JFrame {
         JFrame f = new JFrame("Product Remove");
         f.setBounds(300,300, 400,130);
         f.setLayout(new GridLayout(2,1));
-        JLabel l = new JLabel("Do you want to remove the product? ");
+        JLabel l = new JLabel("Do you want to remove the employee? ");
 
         JButton b = new JButton("Yes");
         JButton b2 = new JButton("No");
+
+        Container button = new Container();
+        button.setLayout(new GridLayout(1,2));
 
         b.addActionListener(e -> {
             removeProduct();
@@ -118,9 +123,10 @@ public class BranchDash extends JFrame {
         });
         b2.addActionListener(e -> f.dispose());
 
+        button.add(b);
+        button.add(b2);
         f.add(l);
-        f.add(b);
-        f.add(b2);
+        f.add(button);
         f.setVisible(true);
 
     }
@@ -205,26 +211,19 @@ public class BranchDash extends JFrame {
             JPanel viewPanel = new JPanel();
             viewPanel.setLayout(new BorderLayout());
 
-//            products = fileM.readProduct();
+
+            employeeList = SQL.getEmployeeList();
 
 
             String[] column_name = {
                     "Employee ID",
                     "Employee Name",
                     "Employee Salary",
-                    "Address",
+                    "Branch",
             };
 
-//            String[][] data = new String[products.size()][6];
-            String[][] data = {};
 
-//            for (int i=0; i < products.size(); i++) {
-//                String[] n = {Integer.toString(products.get(i).getPId()), products.get(i).getPname(), products.get(i).getDescription(), Integer.toString(products.get(i).getPQuantity()), products.get(i).getCategory(), Double.toString(products.get(i).getPrice()), Double.toString(products.get(i).getCost())};
-//                data[i] = n;
-//
-//            }
-
-            JTable productable = new JTable(data, column_name) {
+            JTable productable = new JTable(employeeList, column_name) {
                 public boolean isCellEditable(int row, int column) {
                     return false;
                 }
@@ -276,11 +275,11 @@ public class BranchDash extends JFrame {
 
     class AddEmployee extends JPanel {
         JTextField namef = new JTextField();
-        JTextField descriptionf = new JTextField();
-        JTextField quantityf = new JTextField(20);
-        JTextField pricef = new JTextField(20);
-        JTextField costf = new JTextField(20);
-        JComboBox j1;
+        JTextField passwordf = new JTextField();
+        JTextField salaryf = new JTextField(20);
+//        JTextField addressf = new JTextField(20);
+        JTextField cnicf = new JTextField(20);
+      //  JComboBox j1;
 
         public AddEmployee()
         {
@@ -289,38 +288,35 @@ public class BranchDash extends JFrame {
             JPanel updatePanel = new JPanel();
             updatePanel.setLayout(new GridLayout(7,1, 0, 0));
 
-            JLabel name = new JLabel("Name");
+            JLabel name = new JLabel("Employee Username");
             name.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
 
 
-            JLabel description = new JLabel("Description");
-            description.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
+            JLabel password = new JLabel("Password");
+            password.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
 
-            JLabel quantity = new JLabel("Quantity");
-            quantity.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
-
-            JLabel price = new JLabel("Price");
-            price.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
+            JLabel salary = new JLabel("Salary");
+            salary.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
 
 
-            JLabel cost = new JLabel("Cost");
-            cost.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
+            JLabel cnic = new JLabel("CNIC");
+            cnic.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
 
 
 
-            JLabel CategoryLabel = new JLabel("Category");
-            CategoryLabel.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
+//            JLabel CategoryLabel = new JLabel("Category");
+//            CategoryLabel.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
 
 
-            String[] s1 = {"Technology","Grocery","Crockery","Clothing" , "Perfumes"};
-            j1 = new JComboBox(s1);
+//            String[] s1 = {"Technology","Grocery","Crockery","Clothing" , "Perfumes"};
+//            j1 = new JComboBox(s1);
 
 
             JButton add = new JButton();
             add.setText("Add");
             add.setBackground(Color.darkGray);
             add.setForeground(Color.white);
-            add.addActionListener(e -> addProduct(namef.getText(), descriptionf.getText(), quantityf.getText(), pricef.getText(), j1.getSelectedItem().toString(), costf.getText()));
+            add.addActionListener(e -> addEmployee(namef.getText(), passwordf.getText(), cnicf.getText(), salaryf.getText()));
 
             JButton Cancel = new JButton();
             Cancel.setText("Cancel");
@@ -333,37 +329,27 @@ public class BranchDash extends JFrame {
             nameGroup.add(name);
             nameGroup.add(namef);
 
-            JPanel descGroup = new JPanel();
-            descGroup.setLayout(new GridLayout(1, 2));
-            descGroup.setBorder(BorderFactory.createEmptyBorder(25, 180, 25, 180));
-            descGroup.add(description);
-            descGroup.add(descriptionf);
 
-            JPanel priceGroup = new JPanel();
-            priceGroup.setLayout(new GridLayout(1, 2));
-            priceGroup.setBorder(BorderFactory.createEmptyBorder(25, 180, 25, 180));
-            priceGroup.add(price);
-            priceGroup.add(pricef);
+            JPanel passwordGroup = new JPanel();
+            passwordGroup.setLayout(new GridLayout(1, 2));
+            passwordGroup.setBorder(BorderFactory.createEmptyBorder(25, 180, 25, 180));
+            passwordGroup.add(password);
+            passwordGroup.add(passwordf);
 
 
-            JPanel costGroup = new JPanel();
-            costGroup.setLayout(new GridLayout(1, 2));
-            costGroup.setBorder(BorderFactory.createEmptyBorder(25, 180, 25, 180));
-            costGroup.add(cost);
-            costGroup.add(costf);
+            JPanel cnicGroup = new JPanel();
+            cnicGroup.setLayout(new GridLayout(1, 2));
+            cnicGroup.setBorder(BorderFactory.createEmptyBorder(25, 180, 25, 180));
+            cnicGroup.add(cnic);
+            cnicGroup.add(cnicf);
 
 
-            JPanel quanGroup = new JPanel();
-            quanGroup.setLayout(new GridLayout(1, 2));
-            quanGroup.setBorder(BorderFactory.createEmptyBorder(25, 180, 25, 180));
-            quanGroup.add(quantity);
-            quanGroup.add(quantityf);
+            JPanel salaryGroup = new JPanel();
+            salaryGroup.setLayout(new GridLayout(1, 2));
+            salaryGroup.setBorder(BorderFactory.createEmptyBorder(25, 180, 25, 180));
+            salaryGroup.add(salary);
+            salaryGroup.add(salaryf);
 
-            JPanel catGroup = new JPanel();
-            catGroup.setLayout(new GridLayout(1, 2));
-            catGroup.setBorder(BorderFactory.createEmptyBorder(25, 180, 25, 180));
-            catGroup.add(CategoryLabel);
-            catGroup.add(j1);
 
             JPanel buttGroup = new JPanel();
             buttGroup.setLayout(new GridLayout(1, 2));
@@ -372,11 +358,11 @@ public class BranchDash extends JFrame {
             buttGroup.add(Cancel);
 
             updatePanel.add(nameGroup);
-            updatePanel.add(descGroup);
-            updatePanel.add(priceGroup);
-            updatePanel.add(costGroup);
-            updatePanel.add(quanGroup);
-            updatePanel.add(catGroup);
+            updatePanel.add(passwordGroup);
+            updatePanel.add(cnicGroup);
+            updatePanel.add(salaryGroup);
+//            updatePanel.add(quanGroup);
+//            updatePanel.add(catGroup);
             updatePanel.add(buttGroup);
 
             JLabel n1 = new JLabel("a");
@@ -405,38 +391,47 @@ public class BranchDash extends JFrame {
             add(n4,BorderLayout.SOUTH);
         }
 
-        void addProduct (String name, String description, String quantity, String price, String category, String cost) {
-//            Product last;
-//            int id = 0;
-//            if (products.size() > 0) {
-//                last = products.get(products.size() - 1);
-//                id = last.getPId() + 1;
-//            }
-//
-//            Product newProd = new Product(id, name, description, Integer.parseInt(quantity), category, Double.parseDouble(price), Double.parseDouble(cost));
-//
-//            products.add(newProd);
-//
-//            products = fileM.writeProducts(products);
+        void addEmployee (String name, String password, String cnic, String salary) {
 
-            namef.setText("");
-            descriptionf.setText("");
-            quantityf.setText("");
-            pricef.setText("");
+            boolean added = SQL.addEmployee(name, password, cnic, salary);
+
+            if (added) {
+                employeeList = SQL.getEmployeeList();
+
+                namef.setText("");
+                passwordf.setText("");
+                cnicf.setText("");
+                salaryf.setText("");
 
 
-            JFrame f = new JFrame("Product Added");
-            f.setBounds(300,300, 400,100);
-            f.setLayout(new GridLayout(2,1));
-            JLabel l = new JLabel("The product has been added");
+                JFrame f = new JFrame("Employee Added");
+                f.setBounds(300, 300, 400, 100);
+                f.setLayout(new GridLayout(2, 1));
+                JLabel l = new JLabel("The employee has been added");
 
-            JButton b = new JButton("Okay");
+                JButton b = new JButton("Okay");
 
-            b.addActionListener(e -> f.dispose());
+                b.addActionListener(e -> f.dispose());
 
-            f.add(l);
-            f.add(b);
-            f.setVisible(true);
+                f.add(l);
+                f.add(b);
+                f.setVisible(true);
+            } else {
+
+                JFrame f = new JFrame("Employee not Added");
+                f.setBounds(300, 300, 400, 100);
+                f.setLayout(new GridLayout(2, 1));
+                JLabel l = new JLabel("The employee has not been added");
+
+                JButton b = new JButton("Okay");
+
+                b.addActionListener(e -> f.dispose());
+
+                f.add(l);
+                f.add(b);
+                f.setVisible(true);
+
+            }
 
 
         }
@@ -457,27 +452,27 @@ public class BranchDash extends JFrame {
             JPanel updatePanel = new JPanel();
             updatePanel.setLayout(new GridLayout(7,1, 0, 0));
 
-            JLabel name = new JLabel("Name");
+            JLabel name = new JLabel("Employee Username");
             name.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
             JTextField namef = new JTextField();
 //            namef.setText(selected.getPname());
 
-            JLabel description = new JLabel("Description");
+            JLabel description = new JLabel("Employee ID");
             description.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
             JTextField descriptionf = new JTextField();
 //            descriptionf.setText(selected.getDescription());
 
-            JLabel quantity = new JLabel("Quantity");
+            JLabel quantity = new JLabel("Password");
             quantity.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
             JTextField quantityf = new JTextField(20);
 //            quantityf.setText(Integer.toString(selected.getPQuantity()));
 
-            JLabel price = new JLabel("Price");
+            JLabel price = new JLabel("Salary");
             price.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
             JTextField pricef = new JTextField(20);
 //            pricef.setText(Double.toString(selected.getPrice()));
 
-            JLabel cost = new JLabel("Cost");
+            JLabel cost = new JLabel("Address");
             cost.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
             JTextField costf = new JTextField(20);
 //            costf.setText(Double.toString(selected.getCost()));
@@ -485,15 +480,15 @@ public class BranchDash extends JFrame {
             JLabel CategoryLabel = new JLabel("Category");
             CategoryLabel.setBorder(BorderFactory.createEmptyBorder(0,40,0,0));
 
-            String[] s1={"Technology","Grocery","Crockery","Clothing" , "Perfumes"};
-            JComboBox j1=new JComboBox(s1);
+//            String[] s1={"Technology","Grocery","Crockery","Clothing" , "Perfumes"};
+//            JComboBox j1=new JComboBox(s1);
 //            j1.setSelectedItem(selected.getCategory());
 
             JButton edit = new JButton();
             edit.setText("Update");
             edit.setBackground(Color.darkGray);
             edit.setForeground(Color.white);
-            edit.addActionListener(e -> updateProduct(namef.getText(), descriptionf.getText(), quantityf.getText(), pricef.getText(), j1.getSelectedItem().toString(), costf.getText()));
+            edit.addActionListener(e -> updateProduct(namef.getText(), descriptionf.getText(), quantityf.getText(), pricef.getText(), toString(), costf.getText()));
 
 
             JButton Cancel = new JButton();
@@ -534,8 +529,8 @@ public class BranchDash extends JFrame {
             JPanel catGroup = new JPanel();
             catGroup.setLayout(new GridLayout(1, 2));
             catGroup.setBorder(BorderFactory.createEmptyBorder(25, 180, 25, 180));
-            catGroup.add(CategoryLabel);
-            catGroup.add(j1);
+           // catGroup.add(CategoryLabel);
+            //catGroup.add(j1);
 
             JPanel buttGroup = new JPanel();
             buttGroup.setLayout(new GridLayout(1, 2));

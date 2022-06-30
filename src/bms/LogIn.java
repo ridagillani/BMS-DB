@@ -50,12 +50,15 @@ public class LogIn extends JFrame {
 
         employee = new JRadioButton("Employee");
         employee.setForeground(Color.WHITE);
+        employee.setBackground(Color.darkGray);
 
         user = new JRadioButton("User");
         user.setForeground(Color.WHITE);
+        user.setBackground(Color.darkGray);
 
         branch = new JRadioButton("Branch");
         branch.setForeground(Color.WHITE);
+        branch.setBackground(Color.darkGray);
 
         userType = new ButtonGroup();
         userType.add(user);
@@ -96,11 +99,22 @@ public class LogIn extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (branch.isSelected()) {
-                new BranchDash();
-                dispose();
+                boolean loggedIn = SQL.branch_login(username.getText(), password.getText());
+                if (loggedIn) {
+                    new BranchDash();
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "The username and passwords don't match!");
+                }
+
             } else if (user.isSelected()) {
-                new Dashboard();
-                dispose();
+                boolean loggedIn = SQL.user_login(username.getText(), password.getText());
+                if (loggedIn) {
+                    new Dashboard();
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "The username and passwords don't match!");
+                }
             } else if (employee.isSelected()) {
                 new EmployeeDash();
                 dispose();

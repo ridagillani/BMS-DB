@@ -9,6 +9,7 @@ public class SignUp extends  JFrame{
     JButton signup;
     JTextField username, password, confirmPass , name, father, dob, cnic;
     JLabel userLabel, passLabel, mainLabel, fatherLabel, nameLabel, confirmLabel, DOB, CNIC, accLabel;
+    JRadioButton savings, current;
 
     public SignUp() {
         setTitle("User Sign Up");
@@ -27,8 +28,8 @@ public class SignUp extends  JFrame{
         mainLabel.setText("Fill in the required information");
         mainLabel.setBounds(400, 70, 700, 60);
 
-        JRadioButton savings = new JRadioButton("Savings");
-        JRadioButton current = new JRadioButton("Current");
+        savings = new JRadioButton("Savings");
+        current = new JRadioButton("Current");
         savings.setFont(new Font("Cinzel", Font.BOLD, 10));
         current.setFont(new Font("Cinzel", Font.BOLD, 10));
         savings.setFocusable(false);
@@ -89,7 +90,7 @@ public class SignUp extends  JFrame{
         signup = new JButton();
         signup.setText("SUBMIT");
         signup.setBackground(Color.WHITE);
-       signup.addActionListener(new Sign());
+        signup.addActionListener(new Sign());
         signup.setFocusable(false);
 
         signup.setBounds(440, 580, 400, 30);
@@ -101,8 +102,8 @@ public class SignUp extends  JFrame{
         username.setBounds(640, 200, 200, 20);
         fatherLabel.setBounds(440, 250, 200, 20);
         father.setBounds(640,250,200,20);
-        nameLabel.setBounds(440, 300, 200, 20);
-        name.setBounds(640,300,200,20);
+//        nameLabel.setBounds(440, 300, 200, 20);
+//        name.setBounds(640,300,200,20);
         dob.setBounds(640, 350, 200, 20);
         DOB.setBounds(440, 350,200,20);
         cnic.setBounds(640, 400, 200, 20);
@@ -116,8 +117,8 @@ public class SignUp extends  JFrame{
         panel.add(accLabel);
         panel.add(savings);
         panel.add(current);
-        panel.add(nameLabel);
-        panel.add(name);
+//        panel.add(nameLabel);
+//        panel.add(name);
         panel.add(fatherLabel);
         panel.add(father);
         panel.add(userLabel);
@@ -138,24 +139,42 @@ public class SignUp extends  JFrame{
     class Sign implements ActionListener
     {
         public void actionPerformed(ActionEvent ae)
-        {
+        {   String accountType = "";
             String userValue = username.getText();
             String passValue = password.getText();
-            String nameValue = name.getText();
             String confValue = confirmPass.getText();
             String dateValue = dob.getText();
             String CNICv = cnic.getText();
-            if (!dateValue.equals("") && !CNICv.equals("") &&!userValue.equals("") && !passValue.equals("") && !nameValue.equals("") && !confValue.equals("")) {  //if authentic, navigate user to a new page
-                //boolean status = SQL.signup("Talal", "3820130029971", 02, "Iftikhar", 1);
-                new Dashboard();
-                dispose();
+            String fatherV = father.getText();
 
+            if (savings.isSelected()) {
+                accountType = savings.getText();
+            }
+
+            if (current.isSelected()) {
+                accountType = current.getText();
+            }
+
+            if (!dateValue.equals("") && !CNICv.equals("") &&!userValue.equals("") && !passValue.equals("") && !confValue.equals("") && !fatherV.equals("") && !accountType.equals("")) {  //if authentic, navigate user to a new page
+                if (passValue.equals(confValue) ) {
+                    boolean status = SQL.signup(userValue, CNICv, dateValue, fatherV, passValue, accountType);
+                    if (status) {
+                        new Dashboard();
+                        dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Sign up not possible!");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Pin value not correct!");
+                }
             }
             else
             {
                 //show error message
                 JOptionPane.showMessageDialog(null, "Please fill all the fields!");
             }
+
+
 
         }
     }
