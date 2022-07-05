@@ -179,6 +179,7 @@ public class Dashboard extends JFrame {
                         settings.setForeground(Color.darkGray);
                     }
                 }
+                transferPanel = new Transfer();
                 add(transferPanel, BorderLayout.CENTER);
                 transfer.setBackground(Color.gray);
                 transfer.setForeground(Color.WHITE);
@@ -224,6 +225,8 @@ public class Dashboard extends JFrame {
                         settings.setForeground(Color.darkGray);
                     }
                 }
+
+                dashPanel = new MainDash();
                 add(dashPanel, BorderLayout.CENTER);
                 dashboard.setBackground(Color.gray);
                 dashboard.setForeground(Color.WHITE);

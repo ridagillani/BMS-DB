@@ -7,6 +7,7 @@ public class UserDetails {
     static String cnic = "";
     static int accountNumber = 0;
     static String accountType = "";
+    static String password = "";
 
 
     public static String getUserName () {
@@ -54,5 +55,13 @@ public class UserDetails {
 
     public static void setUserID(int userID) {
         UserDetails.userID = userID;
+    }
+
+    public static String getPassword() {
+        return password;
+    }
+
+    public static void setPassword(String password) {
+        UserDetails.password = password;
     }
 }

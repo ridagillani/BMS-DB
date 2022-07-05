@@ -4,8 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainDash extends JPanel {
+    String[][] transactions;
     public MainDash() {
-
+        SQL.updateUserDetails();
+        transactions = SQL.getTransactions(UserDetails.getUserID());
 
         setBackground(Color.white);
         setLayout(new BorderLayout());
@@ -56,14 +58,11 @@ public class MainDash extends JPanel {
 
         String[] column_name = {
                 "Receiver Name",
-                "Receiver Account No.",
                 "Amount",
                 "Timestamp"
         };
 
-        String[][] data = {};
-
-        JTable history = new JTable(data, column_name);
+        JTable history = new JTable(transactions, column_name);
 
 
         history.setAutoCreateRowSorter(true);

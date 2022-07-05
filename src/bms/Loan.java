@@ -6,8 +6,8 @@ import java.awt.*;
 public class Loan extends JPanel {
 
     JButton apply;
-    JTextField reason, amount, cnic, name;
-    JLabel reasonLabel, amountLabel, cnicLabel, headingL;
+    JTextField amount;
+    JLabel amountLabel, headingL;
     Container align, mainContainer;
 
     public Loan(){
@@ -23,11 +23,7 @@ public class Loan extends JPanel {
         headingL.setText("Apply For Loan");
         headingL.setHorizontalAlignment(headingL.CENTER);
 
-        reasonLabel = new JLabel();
-        reasonLabel.setForeground(Color.DARK_GRAY);
-        reasonLabel.setText("Applicant's CNIC : ");
 
-        cnic = new JTextField(15);
 
         amountLabel = new JLabel();
         amountLabel.setForeground(Color.DARK_GRAY);
@@ -35,17 +31,13 @@ public class Loan extends JPanel {
 
         amount = new JTextField(15);
 
-        cnicLabel = new JLabel();
-        cnicLabel.setForeground(Color.DARK_GRAY);
-        cnicLabel.setText("Applicant's Name : ");
 
-        name = new JTextField(15);
 
         apply = new JButton();
         apply.setText("Apply for Loan");
         apply.setBackground(Color.darkGray);
         apply.setForeground(Color.white);
-        //  transfer.addActionListener(new SignUp.Sign());
+        apply.addActionListener(e -> applyLoan());
         apply.setFocusable(false);
 //        transfer.setSize(500,20);
 
@@ -56,12 +48,10 @@ public class Loan extends JPanel {
         mainContainer.setBackground(Color.darkGray);
         mainContainer.setLayout(new GridLayout(3,1, 40, 40));
 
-        align.add(reasonLabel);
-        align.add(cnic);
+
         align.add(amountLabel);
         align.add(amount);
-        align.add(cnicLabel);
-        align.add(name);
+
 
         buttonContainer.add(apply);
 
@@ -70,5 +60,20 @@ public class Loan extends JPanel {
         mainContainer.add(buttonContainer);
 
         add(mainContainer);
+    }
+
+    void applyLoan() {
+        int amnt = Integer.parseInt(amount.getText());
+
+
+        boolean applied = SQL.applyLoan(UserDetails.getAccountNumber(), amnt);
+
+        if (!applied) {
+            JOptionPane.showMessageDialog(null, "Unable to apply for loan!");
+            return;
+        }
+
+        JOptionPane.showMessageDialog(null, "Loan applied successfully!");
+
     }
 }

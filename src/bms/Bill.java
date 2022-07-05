@@ -22,11 +22,11 @@ public class Bill extends JPanel {
         headingL.setText("Bill Payment");
         headingL.setHorizontalAlignment(headingL.CENTER);
 
-        cnicL = new JLabel();
-        cnicL.setForeground(Color.DARK_GRAY);
-        cnicL.setText("Sender's CNIC : ");
+//        cnicL = new JLabel();
+//        cnicL.setForeground(Color.DARK_GRAY);
+//        cnicL.setText("Sender's CNIC : ");
 
-        CNIC = new JTextField(15);
+//        CNIC = new JTextField(15);
 
         bilL = new JLabel();
         bilL.setForeground(Color.DARK_GRAY);
@@ -37,11 +37,11 @@ public class Bill extends JPanel {
         JComboBox<String> type = new JComboBox<>(optionsToChoose);
         type.setBounds(80, 50, 140, 20);
 
-        numLabel = new JLabel();
-        numLabel.setForeground(Color.DARK_GRAY);
-        numLabel.setText("Receiver Account : ");
-
-        accNum = new JTextField(15);
+//        numLabel = new JLabel();
+//        numLabel.setForeground(Color.DARK_GRAY);
+//        numLabel.setText("Receiver Account : ");
+//
+//        accNum = new JTextField(15);
 
         amountLabel = new JLabel();
         amountLabel.setForeground(Color.DARK_GRAY);
@@ -59,7 +59,7 @@ public class Bill extends JPanel {
         pay.setText("Pay Now");
         pay.setBackground(Color.darkGray);
         pay.setForeground(Color.white);
-        //  transfer.addActionListener(new SignUp.Sign());
+        pay.addActionListener(e -> bill((String) type.getSelectedItem()));
         pay.setFocusable(false);
         pay.setHorizontalAlignment(pay.CENTER);
 
@@ -72,10 +72,10 @@ public class Bill extends JPanel {
         mainContainer.setLayout(new GridLayout(3,1, 40, 40));
 
         mainContainer.add(headingL);
-        align.add(cnicL);
-        align.add(CNIC);
-        align.add(numLabel);
-        align.add(accNum);
+//        align.add(cnicL);
+//        align.add(CNIC);
+//        align.add(numLabel);
+//        align.add(accNum);
         align.add(amountLabel);
         align.add(amount);
         align.add(bilL);
@@ -85,5 +85,24 @@ public class Bill extends JPanel {
         mainContainer.add(align);
         mainContainer.add(buttonContainer);
         add(mainContainer);
+    }
+
+    void bill (String billOf) {
+        String password = pin.getText();
+        int amnt = Integer.parseInt(amount.getText());
+
+        if(password.equals(UserDetails.getPassword())) {
+            boolean paid = SQL.billPayment(UserDetails.getAccountNumber(), amnt, billOf);
+
+            if (!paid) {
+                JOptionPane.showMessageDialog(null, "Unable to pay bill!");
+                return;
+            }
+
+            JOptionPane.showMessageDialog(null, "Bill paid successfully!");
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Incorrect Password!");
+        }
     }
 }

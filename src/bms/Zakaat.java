@@ -48,7 +48,7 @@ public class Zakaat extends JPanel {
         donate.setText("Pay Now");
         donate.setBackground(Color.darkGray);
         donate.setForeground(Color.white);
-        //  transfer.addActionListener(new SignUp.Sign());
+        donate.addActionListener(e -> zakaat((String) charity.getSelectedItem()));
         donate.setFocusable(false);
 
         Container buttonContainer = new Container();
@@ -69,5 +69,24 @@ public class Zakaat extends JPanel {
         buttonContainer.add(donate);
         mainContainer.add(buttonContainer);
         add(mainContainer);
+    }
+
+    void zakaat(String charity) {
+        String password = pin.getText();
+        int amnt = Integer.parseInt(amount.getText());
+
+        if(password.equals(UserDetails.getPassword())) {
+            boolean paid = SQL.zakaat(UserDetails.getAccountNumber(), amnt, charity);
+
+            if (!paid) {
+                JOptionPane.showMessageDialog(null, "Unable to pay zakaat!");
+                return;
+            }
+
+            JOptionPane.showMessageDialog(null, "Zakaat paying successfully!");
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Incorrect Password!");
+        }
     }
 }

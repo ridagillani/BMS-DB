@@ -222,26 +222,26 @@ public class BranchDash extends JFrame {
             };
 
 
-            JTable productable = new JTable(employeeList, column_name) {
+            JTable employeetable = new JTable(employeeList, column_name) {
                 public boolean isCellEditable(int row, int column) {
                     return false;
                 }
             };
 
-            productable.setAutoCreateRowSorter(true);
-            productable.setSelectionBackground(Color.LIGHT_GRAY);
-            productable.setRowSelectionAllowed(true);
-            productable.getSelectionModel().addListSelectionListener(event -> {
+            employeetable.setAutoCreateRowSorter(true);
+            employeetable.setSelectionBackground(Color.LIGHT_GRAY);
+            employeetable.setRowSelectionAllowed(true);
+            employeetable.getSelectionModel().addListSelectionListener(event -> {
                 if (!event.getValueIsAdjusting()) {
-                    selectedRow = Integer.parseInt(productable.getValueAt(productable.getSelectedRow(), 0).toString());
+                    selectedRow = Integer.parseInt(employeetable.getValueAt(employeetable.getSelectedRow(), 0).toString());
                 }
             });
 
 
 
-            productable.setRowHeight(35);
-            viewPanel.add(productable.getTableHeader(), BorderLayout.NORTH);
-            viewPanel.add(productable, BorderLayout.CENTER);
+            employeetable.setRowHeight(35);
+            viewPanel.add(employeetable.getTableHeader(), BorderLayout.NORTH);
+            viewPanel.add(employeetable, BorderLayout.CENTER);
 
 
             JLabel n1 = new JLabel("a");
@@ -553,10 +553,10 @@ public class BranchDash extends JFrame {
             if (updated) {
                 employeeList = SQL.getEmployeeList();
 
-                JFrame f = new JFrame("Product Update");
+                JFrame f = new JFrame("Employee Update");
                 f.setBounds(300,300, 400,100);
                 f.setLayout(new GridLayout(2,1));
-                JLabel l = new JLabel("The product has been updated");
+                JLabel l = new JLabel("The employee has been updated");
 
                 JButton b = new JButton("Okay");
 
@@ -566,10 +566,10 @@ public class BranchDash extends JFrame {
                 f.add(b);
                 f.setVisible(true);
             } else {
-                JFrame f = new JFrame("Product Update");
+                JFrame f = new JFrame("Employee Update");
                 f.setBounds(300,300, 400,100);
                 f.setLayout(new GridLayout(2,1));
-                JLabel l = new JLabel("The product unable to be updated");
+                JLabel l = new JLabel("The employee unable to be updated");
 
                 JButton b = new JButton("Okay");
 

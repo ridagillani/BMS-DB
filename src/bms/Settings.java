@@ -18,18 +18,18 @@ public class Settings extends JPanel {
         headingL = new JLabel();
         headingL.setForeground(Color.DARK_GRAY);
         headingL.setFont(new Font("Cinzel", Font.BOLD, 30));
-        headingL.setText("Update App Pin");
+        headingL.setText("Update Password");
         headingL.setHorizontalAlignment(headingL.CENTER);
 
         oldL = new JLabel();
         oldL.setForeground(Color.DARK_GRAY);
-        oldL.setText("Old Pin : ");
+        oldL.setText("Old Pass : ");
 
         oldP = new JTextField(15);
 
         pinLabel = new JLabel();
         pinLabel.setForeground(Color.DARK_GRAY);
-        pinLabel.setText("New Pin : ");
+        pinLabel.setText("New Pass : ");
 
         pin = new JTextField(15);
 
@@ -43,9 +43,9 @@ public class Settings extends JPanel {
         confirm.setText("Confirm");
         confirm.setBackground(Color.darkGray);
         confirm.setForeground(Color.white);
-        //  transfer.addActionListener(new SignUp.Sign());
         confirm.setFocusable(false);
         confirm.setHorizontalAlignment(confirm.CENTER);
+        confirm.addActionListener(e -> changePass());
 
         Container buttonContainer = new Container();
         buttonContainer.setLayout(new GridBagLayout());
@@ -65,5 +65,23 @@ public class Settings extends JPanel {
         mainContainer.add(align);
         mainContainer.add(buttonContainer);
         add(mainContainer);
+    }
+
+    void changePass() {
+        if (!pin.getText().equals(cpinF.getText())) {
+            JOptionPane.showMessageDialog(null, "The passwords don't match!");
+            return;
+        }
+        boolean updated = SQL.changeUserPass(UserDetails.getUserID(), oldP.getText(), pin.getText());
+
+        if (updated) {
+            pin.setText("");
+            cpinF.setText("");
+            oldP.setText("");
+            JOptionPane.showMessageDialog(null, "Password changed successfully!");
+        } else {
+            JOptionPane.showMessageDialog(null, "The old password don't match!");
+        }
+
     }
 }

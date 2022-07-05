@@ -52,7 +52,7 @@ public class Mobile extends JPanel {
         load.setText("Transfer Amount");
         load.setBackground(Color.darkGray);
         load.setForeground(Color.white);
-        //  transfer.addActionListener(new SignUp.Sign());
+        load.addActionListener(e -> load((String) network.getSelectedItem()));
         load.setFocusable(false);
 
         Container buttonContainer = new Container();
@@ -75,5 +75,24 @@ public class Mobile extends JPanel {
         buttonContainer.add(load);
         mainContainer.add(buttonContainer);
         add(mainContainer);
+    }
+
+    void load (String network) {
+        String password = pin.getText();
+        int amnt = Integer.parseInt(amount.getText());
+
+        if(password.equals(UserDetails.getPassword())) {
+            boolean paid = SQL.mobile_load(UserDetails.getAccountNumber(), amnt, network, Integer.parseInt(contact.getText()));
+
+            if (!paid) {
+                JOptionPane.showMessageDialog(null, "Unable to load!");
+                return;
+            }
+
+            JOptionPane.showMessageDialog(null, "Loaded successfully!");
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Incorrect Password!");
+        }
     }
 }
